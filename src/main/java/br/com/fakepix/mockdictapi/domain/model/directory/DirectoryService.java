@@ -2,6 +2,8 @@ package br.com.fakepix.mockdictapi.domain.model.directory;
 
 import br.com.fakepix.mockdictapi.api.CreateEntryRequest;
 import br.com.fakepix.mockdictapi.api.CreateEntryResponse;
+import br.com.fakepix.mockdictapi.api.ResponseException;
+import org.apache.commons.lang3.EnumUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +16,30 @@ public class DirectoryService {
     this.entryRepository = entryRepository;
   }
   
-  public CreateEntryResponse create(CreateEntryRequest request) {
+  public CreateEntryResponse create(CreateEntryRequest request) throws EntryInvalidException, ParticipantForbiddenException {
+    validateCreateEntryRequest(request);
+    
     Entry savedEntry = entryRepository.save(request.getEntry());
     
     return new CreateEntryResponse(request.getSignature(), savedEntry);
+  }
+  
+  public void validateCreateEntryRequest(CreateEntryRequest request) throws EntryInvalidException, ParticipantForbiddenException {
+    checkIfParticipantIsAllowed(request);
+    checkIfIsValidKeyType(request);
+  }
+  
+  private void checkIfParticipantIsAllowed(CreateEntryRequest request) throws ParticipantForbiddenException {
+    if (request.getSignature().isEmpty()) {
+      throw new ParticipantForbiddenException();
+    }
+  }
+  
+  private boolean checkIfIsValidKeyType(CreateEntryRequest request) throws EntryInvalidException {
+    if (EnumUtils.isValidEnum(KeyType.class, request.getEntry().getKeyType())) {
+      return true;
+    }
+    
+    throw new EntryInvalidException("Invalid KeyType", request.getEntry().getKeyType(), "entry.keyType");
   }
 }

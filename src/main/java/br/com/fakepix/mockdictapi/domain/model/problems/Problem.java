@@ -4,18 +4,14 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@JacksonXmlRootElement
+@JacksonXmlRootElement(localName = "problem")
 public class Problem {
-  @JacksonXmlProperty
-  private String xmlns;
   
-  @JacksonXmlElementWrapper(useWrapping = false)
-  private List<Violation> violations;
-  
-  @JacksonXmlProperty
-  private String detail;
+  @JacksonXmlProperty(isAttribute = true)
+  private String xmlns = "urn:ietf:rfc:7807";
   
   @JacksonXmlProperty
   private String type;
@@ -24,22 +20,16 @@ public class Problem {
   private String title;
   
   @JacksonXmlProperty
-  private String status;
+  private Integer status;
+  
+  @JacksonXmlProperty
+  private String detail;
+  
+  @JacksonXmlElementWrapper(useWrapping = false)
+  private List<Violation> violations = new ArrayList<>();
   
   public String getXmlns() {
     return xmlns;
-  }
-  
-  public void setXmlns(String xmlns) {
-    this.xmlns = xmlns;
-  }
-  
-  public List<Violation> getViolations() {
-    return violations;
-  }
-  
-  public void setViolations(List<Violation> violations) {
-    this.violations = violations;
   }
   
   public String getDetail() {
@@ -66,12 +56,20 @@ public class Problem {
     this.title = title;
   }
   
-  public String getStatus() {
+  public Integer getStatus() {
     return status;
   }
   
-  public void setStatus(String status) {
+  public void setStatus(Integer status) {
     this.status = status;
+  }
+  
+  public List<Violation> getViolations() {
+    return violations;
+  }
+  
+  public void addViolation(Violation violation) {
+    violations.add(violation);
   }
   
   @Override
