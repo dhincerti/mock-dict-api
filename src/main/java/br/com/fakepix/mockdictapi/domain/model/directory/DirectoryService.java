@@ -1,8 +1,5 @@
 package br.com.fakepix.mockdictapi.domain.model.directory;
 
-import br.com.fakepix.mockdictapi.api.CreateEntryRequest;
-import br.com.fakepix.mockdictapi.api.CreateEntryResponse;
-import br.com.fakepix.mockdictapi.api.ResponseException;
 import org.apache.commons.lang3.EnumUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,5 +38,9 @@ public class DirectoryService {
     }
     
     throw new EntryInvalidException("Invalid KeyType", request.getEntry().getKeyType(), "entry.keyType");
+  }
+  
+  public GetEntryPayload retrieveEntry(String key) {
+    return new GetEntryPayload(entryRepository.findByKey(key));
   }
 }

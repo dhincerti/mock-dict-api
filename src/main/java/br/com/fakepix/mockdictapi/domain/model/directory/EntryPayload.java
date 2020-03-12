@@ -1,18 +1,19 @@
-package br.com.fakepix.mockdictapi.api;
+package br.com.fakepix.mockdictapi.domain.model.directory;
 
-import br.com.fakepix.mockdictapi.domain.model.directory.Entry;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-@JacksonXmlRootElement
-public class CreateEntryResponse {
+public class EntryPayload {
   @JacksonXmlProperty(localName = "Entry")
   private Entry entry;
   
   @JacksonXmlProperty(localName = "Signature")
   private String signature;
   
-  public CreateEntryResponse(String signature, Entry entry) {
+  public EntryPayload(Entry entry) {
+    this.entry = entry;
+  }
+  
+  public EntryPayload(String signature, Entry entry) {
     this.signature = signature;
     this.entry = entry;
   }
@@ -37,4 +38,5 @@ public class CreateEntryResponse {
   public String toString() {
     return "ClassPojo [Entry = " + entry + ", Signature = " + signature + "]";
   }
+  
 }

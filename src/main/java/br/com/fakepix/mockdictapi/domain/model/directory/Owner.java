@@ -4,26 +4,30 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @JacksonXmlRootElement
-public class Owner {
+public class Owner implements Serializable {
+  private static final long serialVersionUID = 1L;
+  
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @JsonIgnore
+  @Column
   private Long id;
   
   @JacksonXmlProperty(localName = "Type")
+  @Column
   private String type;
   
   @JacksonXmlProperty(localName = "TaxIdNumber")
+  @Column
   private String taxIdNumber;
   
   @JacksonXmlProperty(localName = "Name")
+  @Column
   private String name;
   
   public Long getId() {

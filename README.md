@@ -40,4 +40,29 @@ curl --location --request POST 'http://localhost:9000/api/v1/entries' \
       <Name>João Silva</Name>
     </Owner>
   </Entry>
-</CreateEntryRequest>```
+</CreateEntryRequest>'
+```
+
+#### Consultar vínculo
+```
+curl --location --request POST 'http://localhost:9000/api/v1/entries' \
+--header 'Content-Type: application/xml' \
+--data-raw '<CreateEntryRequest>
+  <Signature>ASSINATURA123</Signature>
+  <Entry>
+    <Key>5561988887707</Key>
+    <KeyType>PHONE</KeyType>
+    <Account>
+      <Participant>12345678</Participant>
+      <Branch>00001</Branch>
+      <AccountNumber>0007654321</AccountNumber>
+      <AccountType>CACC</AccountType>
+    </Account>
+    <Owner>
+      <Type>NATURAL_PERSON</Type>
+      <TaxIdNumber>11122233300</TaxIdNumber>
+      <Name>João Silva</Name>
+    </Owner>
+  </Entry>
+</CreateEntryRequest>'
+```
