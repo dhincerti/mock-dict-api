@@ -40,7 +40,12 @@ public class DirectoryService {
     throw new EntryInvalidException("Invalid KeyType", request.getEntry().getKeyType(), "entry.keyType");
   }
   
-  public GetEntryPayload retrieveEntry(String key) {
-    return new GetEntryPayload(entryRepository.findByKey(key));
+  public GetEntryPayload retrieveEntry(String key) throws EntryNotFoundException {
+    Entry byKey = entryRepository.findByKey(key);
+    if (byKey == null) {
+      throw new EntryNotFoundException();
+    }
+    
+    return new GetEntryPayload(byKey);
   }
 }

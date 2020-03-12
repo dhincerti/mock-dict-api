@@ -18,6 +18,13 @@ public class ResponseException extends Exception {
     problem.setDetail(detail);
   }
   
+  public ResponseException(String type, String title, Integer status) {
+    problem = new Problem();
+    problem.setType(type);
+    problem.setTitle(title);
+    problem.setStatus(status);
+  }
+  
   public Problem getProblem() {
     return problem;
   }

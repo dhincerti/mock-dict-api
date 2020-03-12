@@ -2,11 +2,9 @@ package br.com.fakepix.mockdictapi.api;
 
 import br.com.fakepix.mockdictapi.domain.model.directory.CreateEntryRequest;
 import br.com.fakepix.mockdictapi.domain.model.directory.DirectoryService;
+import br.com.fakepix.mockdictapi.domain.model.directory.EntryNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,6 +14,15 @@ public class EntriesController {
   public static final String PI_PAYER_ACCOUNT_SERVICER = "PI-PayerAccountServicer";
   public static final String PI_PAYER_ID = "PI-PayerId";
   public static final String PI_END_TO_END_ID = "PI-EndToEndId";
+  public static final String PI_RATE_LIMIT_CLIENT_REMAINING = "PI-RateLimit-ClientRemaining";
+  public static final String PI_RATE_LIMIT_CLIENT_RESET = "PI-RateLimit-ClientReset";
+  public static final String PI_RATE_LIMIT_PARTICIPANT_REMAINING = "PI-RateLimit-ParticipantRemaining";
+  public static final String PI_RATE_LIMIT_PARTICIPANT_RESET = "PI-RateLimit-ParticipantReset";
+  public static final String PI_RATE_LIMIT_CLIENT_REMAINING_VALUE = "100";
+  public static final String PI_RATE_LIMIT_CLIENT_RESET_VALUE = "30";
+  public static final String PI_RATE_LIMIT_PARTICIPANT_REMAINING_VALUE = "100";
+  public static final String PI_RATE_LIMIT_PARTICIPANT_RESET_VALUE = "30";
+  
   private DirectoryService directoryService;
   
   @Autowired
@@ -38,6 +45,17 @@ public class EntriesController {
                                              @RequestHeader(name = PI_PAYER_ID) String payerId,
                                              @RequestHeader(name = PI_END_TO_END_ID) String e2eID,
                                              @PathVariable(name = "key") String key) {
-    return new ResponseEntity(directoryService.retrieveEntry(key), HttpStatus.OK);
+  
+    HttpHeaders headers = new HttpHeaders();
+    headers.set(PI_RATE_LIMIT_CLIENT_REMAINING, PI_RATE_LIMIT_CLIENT_REMAINING_VALUE);
+    headers.set(PI_RATE_LIMIT_CLIENT_RESET, PI_RATE_LIMIT_CLIENT_RESET_VALUE);
+    headers.set(PI_RATE_LIMIT_PARTICIPANT_REMAINING, PI_RATE_LIMIT_PARTICIPANT_REMAINING_VALUE);
+    headers.set(PI_RATE_LIMIT_PARTICIPANT_RESET, PI_RATE_LIMIT_PARTICIPANT_RESET_VALUE);
+  
+    try {
+      return ResponseEntity.ok().headers(headers).body(directoryService.retrieveEntry(key));
+    } catch (EntryNotFoundException e) {
+      return new ResponseEntity(e.getProblem(), HttpStatus.resolve(e.getProblem().getStatus()));
+    }
   }
 }
