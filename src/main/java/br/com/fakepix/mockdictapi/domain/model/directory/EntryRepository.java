@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 public interface EntryRepository extends CrudRepository<Entry, Long> {
   
   Entry findByKey(String key);
+  void deleteByKey(String key);
 }

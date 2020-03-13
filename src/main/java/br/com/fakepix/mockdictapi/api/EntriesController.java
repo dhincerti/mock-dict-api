@@ -1,6 +1,7 @@
 package br.com.fakepix.mockdictapi.api;
 
 import br.com.fakepix.mockdictapi.domain.model.directory.CreateEntryRequest;
+import br.com.fakepix.mockdictapi.domain.model.directory.DeleteEntryRequest;
 import br.com.fakepix.mockdictapi.domain.model.directory.DirectoryService;
 import br.com.fakepix.mockdictapi.domain.model.directory.EntryNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,4 +59,19 @@ public class EntriesController {
       return new ResponseEntity(e.getProblem(), HttpStatus.resolve(e.getProblem().getStatus()));
     }
   }
+
+  @RequestMapping(path = ENTRIES + "/{key}/delete", method = RequestMethod.POST, consumes = MediaType.APPLICATION_XML_VALUE, produces = MediaType.APPLICATION_XML_VALUE)
+  @ResponseStatus(code = HttpStatus.NO_CONTENT)
+  public HttpEntity  deleteEntry(@RequestBody DeleteEntryRequest request){
+
+    try {
+      directoryService.deleteEntry(request);
+      return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }catch (ResponseException e){
+      return new ResponseEntity(e.getProblem(), HttpStatus.resolve(e.getProblem().getStatus()));
+    }
+
+  }
+
+
 }
