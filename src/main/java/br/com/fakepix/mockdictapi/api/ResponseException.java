@@ -11,6 +11,7 @@ public class ResponseException extends Exception {
   protected Problem problem;
   
   public ResponseException(String type, String title, Integer status, String detail) {
+    super();
     problem = new Problem();
     problem.setType(type);
     problem.setTitle(title);
@@ -19,6 +20,7 @@ public class ResponseException extends Exception {
   }
   
   public ResponseException(String type, String title, Integer status) {
+    super();
     problem = new Problem();
     problem.setType(type);
     problem.setTitle(title);

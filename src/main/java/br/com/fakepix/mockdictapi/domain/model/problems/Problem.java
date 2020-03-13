@@ -4,6 +4,8 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,16 +16,19 @@ public class Problem {
   private String xmlns = "urn:ietf:rfc:7807";
   
   @JacksonXmlProperty
+  @NotEmpty
   private String type;
   
   @JacksonXmlProperty
+  @NotEmpty
   private String title;
   
   @JacksonXmlProperty
+  @NotNull
   private Integer status;
   
   @JacksonXmlProperty
-  private String detail;
+  private String detail = "";
   
   @JacksonXmlElementWrapper(useWrapping = false)
   private List<Violation> violations = new ArrayList<>();
@@ -72,8 +77,4 @@ public class Problem {
     violations.add(violation);
   }
   
-  @Override
-  public String toString() {
-    return "ClassPojo [xmlns = " + xmlns + ", violations = " + violations + ", detail = " + detail + ", type = " + type + ", title = " + title + ", status = " + status + "]";
-  }
 }

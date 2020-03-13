@@ -22,31 +22,6 @@ Documentação oficial:
 ```
 curl --location --request POST 'http://localhost:9000/api/v1/entries' \
 --header 'Content-Type: application/xml' \
---data-raw '<?xml version="1.0" encoding="UTF-8"?>
-<CreateEntryRequest>
-  <Signature>ASSINATURA123</Signature>
-  <Entry>
-    <Key>+5561988887777</Key>
-    <KeyType>PHONE</KeyType>
-    <Account>
-      <Participant>12345678</Participant>
-      <Branch>00001</Branch>
-      <AccountNumber>0007654321</AccountNumber>
-      <AccountType>CACC</AccountType>
-    </Account>
-    <Owner>
-      <Type>NATURAL_PERSON</Type>
-      <TaxIdNumber>11122233300</TaxIdNumber>
-      <Name>João Silva</Name>
-    </Owner>
-  </Entry>
-</CreateEntryRequest>'
-```
-
-#### Consultar vínculo
-```
-curl --location --request POST 'http://localhost:9000/api/v1/entries' \
---header 'Content-Type: application/xml' \
 --data-raw '<CreateEntryRequest>
   <Signature>ASSINATURA123</Signature>
   <Entry>
@@ -64,5 +39,24 @@ curl --location --request POST 'http://localhost:9000/api/v1/entries' \
       <Name>João Silva</Name>
     </Owner>
   </Entry>
+</CreateEntryRequest>'
+```
+
+#### Consultar Vínculo
+```
+curl --location --request GET 'http://localhost:9000/api/v1/entries/5561988887707' \
+--header 'Content-Type: application/xml' \
+--header 'PI-PayerAccountServicer: ExamplePayerAccountServicer' \
+--header 'PI-PayerId: ExamplePayerId' \
+--header 'PI-EndToEndId: ExampleEndToEndId'
+```
+
+#### Remover Vínculo
+``` 
+curl --location --request POST 'http://localhost:9000/api/v1/entries/5561988887707/delete' \
+--header 'Content-Type: application/xml' \
+--data-raw '<CreateEntryRequest>
+  <Signature>ASSINATURA123</Signature>
+  <Key>5561988887707</Key>
 </CreateEntryRequest>'
 ```
