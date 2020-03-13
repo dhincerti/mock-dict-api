@@ -3,6 +3,7 @@ package br.com.fakepix.mockdictapi.domain.model.directory;
 import org.apache.commons.lang3.EnumUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class DirectoryService {
@@ -48,4 +49,19 @@ public class DirectoryService {
     
     return new GetEntryPayload(byKey);
   }
-}
+
+  @Transactional
+  public void deleteEntry(DeleteEntryRequest request) throws EntryNotFoundException, ParticipantForbiddenException {
+    if (request.getSignature().isEmpty()) {
+      throw new ParticipantForbiddenException();
+    }
+    Entry deleteKey = entryRepository.findByKey(request.getKey());
+     if(deleteKey == null){
+       throw new EntryNotFoundException();
+     }
+     entryRepository.deleteByKey(request.getKey());
+
+    }
+
+  }
+
