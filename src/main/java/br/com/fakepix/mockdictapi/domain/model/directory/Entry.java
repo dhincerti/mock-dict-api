@@ -8,6 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "entry")
@@ -40,6 +42,16 @@ public class Entry implements Serializable {
   @NotEmpty
   @Column(name = "key", unique = true)
   private String key;
+  
+  @JacksonXmlProperty(localName = "CreationDate")
+  private String creationDate = today();
+  
+  @JacksonXmlProperty(localName = "KeyOwnershipDate")
+  private String keyOwnershipDate = today();
+  
+  public static long getSerialVersionUID() {
+    return serialVersionUID;
+  }
   
   public Long getId() {
     return id;
@@ -81,8 +93,23 @@ public class Entry implements Serializable {
     this.key = key;
   }
   
-  @Override
-  public String toString() {
-    return "ClassPojo [Account = " + account + ", Owner = " + owner + ", KeyType = " + keyType + ", Key = " + key + "]";
+  public String getCreationDate() {
+    return creationDate;
+  }
+  
+  public void setCreationDate(String creationDate) {
+    this.creationDate = creationDate;
+  }
+  
+  public String getKeyOwnershipDate() {
+    return keyOwnershipDate;
+  }
+  
+  public void setKeyOwnershipDate(String keyOwnershipDate) {
+    this.keyOwnershipDate = keyOwnershipDate;
+  }
+  
+  private String today() {
+    return DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDate.now());
   }
 }

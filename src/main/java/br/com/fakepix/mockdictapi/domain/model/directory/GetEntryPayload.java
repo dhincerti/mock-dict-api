@@ -4,8 +4,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 @JacksonXmlRootElement
 public class GetEntryPayload extends EntryPayload {
-  
-  public GetEntryPayload(Entry entry) {
-    super(entry);
+  public GetEntryPayload(String signature, Entry entry) {
+    super(signature, entry);
   }
 }

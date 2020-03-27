@@ -47,7 +47,7 @@ public class DirectoryService {
       throw new EntryNotFoundException();
     }
     
-    return new GetEntryPayload(byKey);
+    return new GetEntryPayload( "", byKey);
   }
 
   @Transactional

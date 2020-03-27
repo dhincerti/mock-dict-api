@@ -1,6 +1,7 @@
 package br.com.fakepix.mockdictapi.api;
 
 import br.com.fakepix.mockdictapi.domain.model.directory.CreateEntryRequest;
+import br.com.fakepix.mockdictapi.domain.model.directory.CreateEntryResponse;
 import br.com.fakepix.mockdictapi.domain.model.directory.DeleteEntryRequest;
 import br.com.fakepix.mockdictapi.domain.model.directory.DirectoryService;
 import br.com.fakepix.mockdictapi.domain.model.ratelimit.RateLimitProperties;
@@ -31,17 +32,17 @@ public class EntriesController {
   @RequestMapping(path = ENTRIES, method = RequestMethod.POST, consumes = MediaType.APPLICATION_XML_VALUE,
       produces = MediaType.APPLICATION_XML_VALUE)
   @ResponseStatus(code = HttpStatus.CREATED)
-  public HttpEntity<Object> createEntry(@RequestBody CreateEntryRequest request) {
+  public ResponseEntity createEntry(@RequestBody CreateEntryRequest request) {
     try {
-      return new ResponseEntity<>(directoryService.create(request), HttpStatus.CREATED);
+      return new ResponseEntity(directoryService.create(request), HttpStatus.CREATED);
     } catch (ResponseException e) {
-      return new ResponseEntity<>(e.getProblem(), HttpStatus.resolve(e.getProblem().getStatus()));
+      return new ResponseEntity(e.getProblem(), HttpStatus.resolve(e.getProblem().getStatus()));
     }
   }
   
   @RequestMapping(path = ENTRIES + "/{key}", method = RequestMethod.GET, consumes = MediaType.APPLICATION_XML_VALUE,
       produces = MediaType.APPLICATION_XML_VALUE)
-  public ResponseEntity<Object> retrieveEntry(@RequestHeader(name = RequestHeaders.PI_PAYER_ACCOUNT_SERVICER) String payerAccount,
+  public ResponseEntity retrieveEntry(@RequestHeader(name = RequestHeaders.PI_PAYER_ACCOUNT_SERVICER) String payerAccount,
                                               @RequestHeader(name = RequestHeaders.PI_PAYER_ID) String payerId,
                                               @RequestHeader(name = RequestHeaders.PI_END_TO_END_ID) String e2eID,
                                               @PathVariable(name = "key") String key) {
@@ -52,7 +53,7 @@ public class EntriesController {
           .headers(headers)
           .body(directoryService.retrieveEntry(key));
     } catch (ResponseException e) {
-      return new ResponseEntity<>(e.getProblem(), HttpStatus.valueOf(e.getProblem().getStatus()));
+      return new ResponseEntity(e.getProblem(), HttpStatus.valueOf(e.getProblem().getStatus()));
     }
   }
   
