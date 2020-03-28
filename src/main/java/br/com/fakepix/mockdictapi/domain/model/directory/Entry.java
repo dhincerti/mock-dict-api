@@ -44,10 +44,12 @@ public class Entry implements Serializable {
   private String key;
   
   @JacksonXmlProperty(localName = "CreationDate")
-  private String creationDate = today();
+  @Column
+  private String creationDate;
   
   @JacksonXmlProperty(localName = "KeyOwnershipDate")
-  private String keyOwnershipDate = today();
+  @Column
+  private String keyOwnershipDate;
   
   public static long getSerialVersionUID() {
     return serialVersionUID;
@@ -107,9 +109,5 @@ public class Entry implements Serializable {
   
   public void setKeyOwnershipDate(String keyOwnershipDate) {
     this.keyOwnershipDate = keyOwnershipDate;
-  }
-  
-  private String today() {
-    return DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDate.now());
   }
 }

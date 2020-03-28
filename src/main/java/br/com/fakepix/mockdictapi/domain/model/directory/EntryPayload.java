@@ -2,6 +2,9 @@ package br.com.fakepix.mockdictapi.domain.model.directory;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class EntryPayload {
   @JacksonXmlProperty(localName = "Entry")
   private Entry entry;
@@ -9,13 +12,18 @@ public class EntryPayload {
   @JacksonXmlProperty(localName = "Signature")
   private String signature;
   
-  public EntryPayload(Entry entry) {
+  public EntryPayload(String signature, Entry entry) {
+    if (entry != null) {
+      entry.setCreationDate(today());
+      entry.setKeyOwnershipDate(today());
+    }
+    
+    this.signature = signature;
     this.entry = entry;
   }
   
-  public EntryPayload(String signature, Entry entry) {
-    this.signature = signature;
-    this.entry = entry;
+  private String today() {
+    return DateTimeFormatter.ofPattern("yyyy-MM-dd").format(LocalDate.now());
   }
   
   public Entry getEntry() {
